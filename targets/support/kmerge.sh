@@ -11,6 +11,7 @@ setup_gk_args() {
 	# default genkernel args
 	GK_ARGS="${clst_gk_mainargs} \
 			 ${clst_kernel_gk_kernargs} \
+			 --loglevel=5 \
 			 --cachedir=/tmp/kerncache/${clst_kname}-genkernel_cache-${clst_version_stamp} \
 			 --no-mountboot \
 			 --kerneldir=/usr/src/linux \
