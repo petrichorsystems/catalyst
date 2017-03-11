@@ -553,8 +553,8 @@ class StageBase(TargetBase, ClearBase, GenBase):
 	def set_catalyst_use(self):
 		if self.settings["spec_prefix"] + "/catalyst_use" in self.settings:
 			self.settings["catalyst_use"] = \
-				self.settings[self.settings["spec_prefix"]+"/catalyst_use"]
-			del self.settings[self.settings["spec_prefix"]+"/catalyst_use"]
+				self.settings[self.settings["spec_prefix"] + "/catalyst_use"]
+			del self.settings[self.settings["spec_prefix"] + "/catalyst_use"]
 		if "catalyst_use" not in self.settings:
 			self.settings["catalyst_use"] = ""
 		if isinstance(self.settings['catalyst_use'], str):
