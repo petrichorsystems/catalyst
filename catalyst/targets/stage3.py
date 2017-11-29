@@ -14,6 +14,7 @@ class stage3(StageBase):
 	def __init__(self,spec,addlargs):
 		self.required_values=[]
 		self.valid_values=[]
+		self.valid_values.extend(["update_stage_command"])
 		StageBase.__init__(self,spec,addlargs)
 
 	def set_portage_overlay(self):
@@ -23,6 +24,14 @@ class stage3(StageBase):
 				'Using an overlay for earlier stages could cause build issues.\n'
 				"If you break it, you buy it.  Don't complain to us about it.\n"
 				"Don't say we did not warn you.")
+
+	def set_action_sequence(self):
+		"""Set basic stage1, 2, 3 action sequences"""
+		self.settings["action_sequence"] = ["unpack", "unpack_snapshot",
+				"setup_confdir", "portage_overlay",
+				"base_dirs", "bind", "chroot_setup", "setup_environment",
+				"run_local", "update_stage", "preclean", "unbind", "clean"]
+		self.set_completion_action_sequences()
 
 	def set_cleanables(self):
 		StageBase.set_cleanables(self)

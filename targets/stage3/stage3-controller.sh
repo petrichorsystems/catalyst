@@ -15,6 +15,10 @@ case $1 in
 		exec_in_chroot ${clst_shdir}/${clst_target}/${clst_target}-chroot.sh
 	;;
 
+	update_stage)
+		exec_in_chroot ${clst_shdir}/${clst_target}/${clst_target}-updates.sh
+	;;
+
 	preclean)
 		exec_in_chroot ${clst_shdir}/${clst_target}/${clst_target}-preclean-chroot.sh
 	;;

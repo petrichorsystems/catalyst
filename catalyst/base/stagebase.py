@@ -882,6 +882,22 @@ class StageBase(TargetBase, ClearBase, GenBase):
 			if "snapcache" in self.settings["options"]:
 				self.snapcache_lock.unlock()
 
+	def update_stage(self):
+		if "autoresume" in self.settings["options"] \
+			and self.resume.is_enabled("update_stage"):
+			log.notice('Resume point detected, skipping update_stage operation...')
+		else:
+			if self.settings["update_stage_command"]:
+				try:
+					if os.path.exists(self.settings["controller_file"]):
+						cmd([self.settings['controller_file'], 'update_stage'],
+							env=self.env)
+						self.resume.enable("update_stage")
+
+				except:
+					self.unbind()
+					raise CatalystError("Build failed, could not execute update_stage")
+
 	def config_profile_link(self):
 		if "autoresume" in self.settings["options"] \
 			and self.resume.is_enabled("config_profile_link"):
