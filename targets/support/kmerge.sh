@@ -36,7 +36,7 @@ setup_gk_args() {
 		GK_ARGS+=(--splash=${clst_splash_theme})
 		# Setup case structure for livecd_type
 		case ${clst_livecd_type} in
-			gentoo-release-minimal|gentoo-release-universal)
+			gentoo-release-minimal|gentoo-release-petrichor|gentoo-release-universal)
 				case ${clst_hostarch} in
 					amd64|x86)
 						GK_ARGS+=(--splash-res=1024x768)

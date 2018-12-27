@@ -181,6 +181,10 @@ case ${clst_livecd_type} in
 		cat /etc/generic.motd.txt /etc/minimal.motd.txt > /etc/motd
 		${clst_sed} -i 's:^##GREETING:Welcome to the Gentoo Linux Minimal Installation CD!:' /etc/motd
 	;;
+	gentoo-release-petrichor)
+		cat /etc/generic.motd.txt /etc/minimal.motd.txt > /etc/motd
+		${clst_sed} -i 's:^##GREETING:Welcome to the Petrichor Linux Minimal Installation CD!:' /etc/motd
+	;;
 	gentoo-release-live*)
 		cat /etc/generic.motd.txt \
 			/etc/minimal.motd.txt /etc/livecd.motd.txt > /etc/motd
@@ -214,7 +218,7 @@ fi
 
 # Clear out locales
 case ${clst_livecd_type} in
-	gentoo-release-minimal|gentoo-release-universal|gentoo-gamecd)
+	gentoo-release-minimal|gentoo-release-petrichor|gentoo-release-universal|gentoo-gamecd)
 		rm -rf /usr/lib/locale/{a,b,c,d,e{l,n_{A,B,C,D,G,H,I,N,P,S,US.,Z},s,t,u},f,g,h,i,j,k,l,m,n,o,p,r,s,t,u,v,w,x,y,z}*
 	;;
 esac
