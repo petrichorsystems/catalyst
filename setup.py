@@ -14,7 +14,7 @@ from catalyst.version import get_version as _get_version
 
 
 _this_dir = _os.path.dirname(__file__)
-_package_name = 'catalyst'
+_package_name = 'petrichor-catalyst'
 _maintainer_name, _maintainer_email = _parseaddr(__maintainer__)
 
 
