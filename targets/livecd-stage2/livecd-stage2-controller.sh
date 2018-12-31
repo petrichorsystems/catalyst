@@ -57,6 +57,19 @@ case $1 in
 			;;
 		esac
 
+		# Move over petrichor-setup.sh (if applicable)
+		case ${clst_livecd_type} in
+		    gentoo-release-petrichor)
+			mkdir ${clst_chroot_path}/etc/petrichor_setup
+			cp -pPR ${clst_sharedir}/livecd/files/petrichor.linux.config \
+			   ${clst_chroot_path}/etc/petrichor_setup/petrichor.linux.config
+			cp -pPR ${clst_sharedir}/livecd/files/petrichor.linux.fstab \
+			   ${clst_chroot_path}/etc/petrichor_setup/petrichor.linux.fstab
+			cp -pPR ${clst_sharedir}/livecd/files/petrichor-setup.sh \
+			   ${clst_chroot_path}/usr/bin/petrichor-setup.sh
+			;;
+		esac
+
 		# move over the environment
 		cp -f ${clst_sharedir}/livecd/files/livecd-bashrc \
 			${clst_chroot_path}/root/.bashrc
