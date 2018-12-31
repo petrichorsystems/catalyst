@@ -75,12 +75,14 @@ emerge sys-kernel/rt-sources
 emerge sys-apps/pciutils
 
 cd /usr/src/linux
-# copy linux config from temp location to here
+cp /etc/petrichor_setup/petrichor.linux.config /usr/src/linux/.config
 
 make && make modules_install
 make install
 
 emerge sys-kernel/linux-firmware
+
+cp /etc/petrichor_setup/petrichor.linux.fstab /etc/fstab
 
 sed -i 's/hostname="localhost".*/hostname="silica"/' /etc/conf.d/hostname
 
