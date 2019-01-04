@@ -10,12 +10,12 @@ parted -s -a optimal /dev/sda mkpart primary 3 131
 parted -s -a optimal /dev/sda name 2 boot
 parted -s -a optimal /dev/sda mkpart primary 131 643
 parted -s -a optimal /dev/sda name 3 swap
-parted -s -a optimal /dev/sda mkpart primary 643 -1
+parted -s -a optimal /dev/sda mkpart primary 643 -- -1
 parted -s -a optimal /dev/sda name 4 rootfs
 parted -s -a optimal /dev/sda set 2 boot on
 
-mkfs.ext2 /dev/sda2
-mkfs.ext4 /dev/sda4
+mkfs.ext2 -F /dev/sda2
+mkfs.ext4 -F /dev/sda4
 mkswap /dev/sda3
 swapon /dev/sda3
 
@@ -48,72 +48,14 @@ mount --make-rslave /mnt/gentoo/sys
 mount --rbind /dev /mnt/gentoo/dev
 mount --make-rslave /mnt/gentoo/dev
 
-chroot /mnt/gentoo /bin/bash
-source /etc/profile
-export PS1="(chroot) ${PS1}"
+mkdir /mnt/gentoo/etc/petrichor_setup
+cp /etc/petrichor_setup/petrichor-setup-chroot.sh /mnt/gentoo/etc/petrichor_setup/. 
+cp /etc/petrichor_setup/petrichor.linux.config /mnt/gentoo/etc/petrichor_setup/.
+cp /etc/petrichor_setup/petrichor.linux.fstab /mnt/gentoo/etc/petrichor_setup/.
 
-mkdir /boot
-mount /dev/sda2 /boot
+chmod +x /mnt/gentoo/etc/petrichor_setup/petrichor-setup-chroot.sh
+chroot /mnt/gentoo /etc/petrichor_setup/petrichor-setup-chroot.sh
 
-emerge-webrsync
-emerge --ask --verbose --update --deep --newuse @world
-
-echo 'USE="-X -kde -gnome -pulseaudio alsa jack midi mp3 dbus osc"' >> /mnt/gentoo/etc/portage/make.conf
-
-echo "US/Pacific" > /etc/timezone
-
-sed -i 's/#en_US ISO-8859-1.*/en_US ISO-8859-1/' /etc/locale.gen
-sed -i 's/#en_US.UTF-8 UTF-8.*/en_US.UTF-8 UTF-8/' /etc/locale.gen
-
-locale-gen
-eselect locale set 4
-
-env-update && source /etc/profile && export PS1="(chroot) $PS1"
-
-emerge sys-kernel/rt-sources
-
-emerge sys-apps/pciutils
-
-cd /usr/src/linux
-cp /etc/petrichor_setup/petrichor.linux.config /usr/src/linux/.config
-
-make && make modules_install
-make install
-
-emerge sys-kernel/linux-firmware
-
-cp /etc/petrichor_setup/petrichor.linux.fstab /etc/fstab
-
-sed -i 's/hostname="localhost".*/hostname="silica"/' /etc/conf.d/hostname
-
-emerge --noreplace net-misc/netifrc
-
-echo 'config_enp2s0="dhcp"' >> /etc/conf.d/net
-
-cd /etc/init.d
-ln -s net.lo net.enp2s0
-rc-update add net.enp2s0 default
-
-echo 'root:silica' | chpasswd
-
-emerge sys-apps/mlocate
-
-rc-update add sshd default
-
-emerge sys-fs/e2fsprogs sys-fs/xfsprogs sys-fs/reiserfsprogs sys-fs/jfsutils sys-fs/dosfstools
-
-emerge net-misc/dhcpcd
-
-emerge --verbose sys-boot/grub:2
-grub-install /dev/sda
-grub-mkconfig -o /boot/grub/grub.cfg
-
-useradd -m -G users,wheel,audio -s /bin/bash silica
-echo 'silica:silica' | chpasswd
-
-rm /stage3-*.tar.xz*
-
-exit
 cd
 umount -l /mnt/gentoo/dev{/shm,/pts,}
 umount -R /mnt/gentoo

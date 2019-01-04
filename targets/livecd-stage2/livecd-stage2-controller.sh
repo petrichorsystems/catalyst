@@ -65,8 +65,10 @@ case $1 in
 			   ${clst_chroot_path}/etc/petrichor_setup/petrichor.linux.config
 			cp -pPR ${clst_sharedir}/livecd/files/petrichor.linux.fstab \
 			   ${clst_chroot_path}/etc/petrichor_setup/petrichor.linux.fstab
-			cp -pPR ${clst_sharedir}/livecd/files/petrichor-setup.sh \
-			   ${clst_chroot_path}/usr/bin/petrichor-setup.sh
+			cp -pPR ${clst_sharedir}/livecd/files/petrichor-setup-chroot.sh \
+			   ${clst_chroot_path}/etc/petrichor_setup/petrichor-setup-chroot.sh
+			cp -pPR ${clst_sharedir}/livecd/files/petrichor-setup \
+			   ${clst_chroot_path}/usr/bin/petrichor-setup
 			;;
 		esac
 
