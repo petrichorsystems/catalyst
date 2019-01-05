@@ -50,17 +50,20 @@ echo 'root:silica' | chpasswd
 
 emerge sys-apps/mlocate
 
+emerge sys-fs/e2fsprogs sys-fs/xfsprogs sys-fs/reiserfsprogs sys-fs/jfsutils sys-fs/dosfstools net-misc/dhcpcd sudo dev-vcs/git alsa-utils jack-audio-connection-kit liblo fftw
+
+echo "@audio          -       memlock         unlimited" >> /etc/security/limits.conf
+echo "@audio          -       nice            -10" >> /etc/security/limits.conf
+echo "@audio          -       rtprio          99" >> /etc/security/limits.conf
+
+rc-update add alsasound boot
 rc-update add sshd default
-
-emerge sys-fs/e2fsprogs sys-fs/xfsprogs sys-fs/reiserfsprogs sys-fs/jfsutils sys-fs/dosfstools
-
-emerge net-misc/dhcpcd
 
 emerge --verbose sys-boot/grub:2
 grub-install --target=i386-pc /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 
-useradd -m -G users,wheel,audio -s /bin/bash silica
+useradd -m -G users,wheel,audio,realtime -s /bin/bash silica
 echo 'silica:silica' | chpasswd
 
 rm /stage3-*.tar.xz*
